@@ -116,12 +116,20 @@ describe("Gameboard factory", () => {
   });
 
   it("position available", () => {
-    expect(Gameboard().positionAvailable([1, 2])).toBe(true);
+    expect(Gameboard().positionsAvailable([[0, 0]])).toBe(true);
   });
 
-  it("position avaiable", () => {
+  it("check if gameboard total positions add to 17", () => {
     const gb = Gameboard();
     gb.populateShipsAtRandom();
+
     expect(gb.getBoard()).countNumberOfShips();
+  });
+
+  it("check if ships array total positions add to 17", () => {
+    const gb = Gameboard();
+    gb.populateShipsAtRandom();
+
+    expect(gb.getShipsPositions()).toBe(17);
   });
 });

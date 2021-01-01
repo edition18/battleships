@@ -107,11 +107,12 @@ export function Gameboard() {
           ship.vertical
         );
 
-        if (positionAvailable(positionsNeeded)) {
+        if (positionsAvailable(positionsNeeded)) {
           addShip(ship, positionsNeeded);
           test.push(positionsNeeded);
         } else {
           ship.startingPosition = randomXYPosition();
+          addToGameboard();
         }
       };
       addToGameboard();
@@ -133,27 +134,54 @@ export function Gameboard() {
     });
   };
 
-  const positionAvailable = (positions) => {
-    // return false if any position is negative (i.e. none existent)
-    positions.forEach((position) =>
-      position[0] < 0 || position[1] < 0 ? false : ""
-    );
-
-    // check and return false if any is truthy(i.e. has something on that spot
-    return positions.some((position) => !board[(position[0], position[1])]);
+  const positionsAvailable = (arrayOfPositions) => {
+    const g = getBoard();
+    const condition = (pos) => {
+      if (pos[0] > 9 || pos[1] > 9) return false;
+      // check if exceeds boundaries
+      else if (g[pos[0]][pos[1]] === "ship") return false;
+      // check if another ship is already there
+      else {
+        return true;
+      }
+    };
+    let canBeAdded = arrayOfPositions.every((pos) => {
+      if (!condition(pos)) {
+        // if fail ANY condition
+        return false;
+      } else {
+        // all pass
+        return true;
+      }
+    });
+    return canBeAdded;
   };
 
   //   const recieveAttack = (coordinate) => {};
   //   const missedAttack = (coordinate) => {};
   //   const reportAllShipSunk = () => {};
 
+  const getShips = () => {
+    return ships.length;
+  };
+
+  const getShipsPositions = () => {
+    const array = [];
+    ships.forEach((ship) =>
+      ship.getAllPositions().forEach((position) => array.push(position))
+    );
+    return array.length;
+  };
+
   return {
     getBoard,
     random0to9,
     randomXYPosition,
     generatePositionsNeeded,
-    positionAvailable,
+    positionsAvailable,
     populateShipsAtRandom,
     addShip,
+    getShips,
+    getShipsPositions,
   };
 }
