@@ -132,4 +132,73 @@ describe("Gameboard factory", () => {
 
     expect(gb.getShipsPositions()).toBe(17);
   });
+
+  it("generate a random ship on the board, attack it", () => {
+    const gb = Gameboard();
+    gb.addShip(
+      {
+        name: "destroyer",
+        length: 2,
+        startingPosition: [0, 0],
+      },
+      [
+        [0, 0],
+        [0, 1],
+      ]
+    );
+    expect(gb.receiveAttack(0, 0)).toBe(true);
+  });
+
+  it("generate a random ship on the board, attack it, check ifAttacked true", () => {
+    const gb = Gameboard();
+    gb.addShip(
+      {
+        name: "destroyer",
+        length: 2,
+        startingPosition: [0, 0],
+      },
+      [
+        [0, 0],
+        [0, 1],
+      ]
+    );
+    gb.receiveAttack(0, 0);
+    expect(gb.isPositionAttacked(0, 0)).toBe(true);
+  });
+
+  it("generate a random ship on the board, attack it, check ifMissed is false", () => {
+    const gb = Gameboard();
+    gb.addShip(
+      {
+        name: "destroyer",
+        length: 2,
+        startingPosition: [0, 0],
+      },
+      [
+        [0, 0],
+        [0, 1],
+      ]
+    );
+    gb.receiveAttack(0, 0);
+    expect(gb.isPositionIsMissed(0, 0)).toBe(false);
+  });
+
+  it("generate a random ship on the board, attack and sink it, All Ship Sunk", () => {
+    const gb = Gameboard();
+    gb.addShip(
+      {
+        name: "destroyer",
+        length: 2,
+        startingPosition: [0, 0],
+      },
+      [
+        [0, 0],
+        [0, 1],
+      ]
+    );
+    gb.receiveAttack(0, 0);
+    gb.receiveAttack(0, 1);
+
+    expect(gb.reportAllShipSunk()).toBe(true);
+  });
 });

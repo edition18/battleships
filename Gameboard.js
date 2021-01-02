@@ -1,6 +1,6 @@
 import { Ship } from "./Ship.js";
 
-export function Gameboard() {
+export const Gameboard = () => {
   // gameboard is duplicated for both players
   // when a player picks a position
   // does position have a ship
@@ -90,14 +90,6 @@ export function Gameboard() {
       },
     ];
 
-    // startingShipSpecifications.forEach((ship) => {
-    //   // const positionsNeeded = generatePositionsNeeded(
-    //   //   ship.length,
-    //   //   ship.startingPosition,
-    //   //   ship.vertical
-    //   // );
-    //   // positionsNeeded.map((position) => test.push(position));
-    // });
     test = [];
     startingShipSpecifications.forEach((ship) => {
       const addToGameboard = () => {
@@ -157,10 +149,23 @@ export function Gameboard() {
     return canBeAdded;
   };
 
-  //   const recieveAttack = (coordinate) => {};
+  const receiveAttack = (a, b) => {
+    let position = board[a][b];
+    if (position === "") {
+      board[a][b] = "missed";
+      return false;
+    } else if (position === "ship") {
+      board[a][b] = "attacked";
+      ships.map((ship) => {
+        if (ship.positions.filter((i) => i === [a, b])) {
+          ship.hit(a, b);
+        }
+      });
+      return true;
+    }
+  };
   //   const missedAttack = (coordinate) => {};
-  //   const reportAllShipSunk = () => {};
-
+  const reportAllShipSunk = () => ships.every((ship) => ship.isSunk());
   const getShips = () => {
     return ships.length;
   };
@@ -173,6 +178,13 @@ export function Gameboard() {
     return array.length;
   };
 
+  const isPositionAttacked = (a, b) => {
+    return board[a][b] === "attacked";
+  };
+  const isPositionIsMissed = (a, b) => {
+    return board[a][b] === "missed";
+  };
+
   return {
     getBoard,
     random0to9,
@@ -183,5 +195,9 @@ export function Gameboard() {
     addShip,
     getShips,
     getShipsPositions,
+    receiveAttack,
+    reportAllShipSunk,
+    isPositionAttacked,
+    isPositionIsMissed,
   };
-}
+};
