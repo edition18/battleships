@@ -1,6 +1,7 @@
 const { sum } = require("./index.js");
 const { Gameboard } = require("./Gameboard.js");
 import { Ship } from "./Ship.js";
+import { Player } from "./Player.js";
 
 describe("Gameboard factory", () => {
   it("board returns empty state with 100 possible grids", () => {

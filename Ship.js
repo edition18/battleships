@@ -1,5 +1,6 @@
 // functionally the same as export function Ship(){}
 export const Ship = (shipName, shipLength, shipPositions) => {
+  // you could theorectically access shipName, shipLength and shipPosition like this
   let name = shipName;
   let length = shipLength;
   let positions = shipPositions;
